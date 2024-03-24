@@ -25,6 +25,8 @@ def get_first_number(line: str) -> str:
             if prefix.startswith(number[0]):
                 return number[1]
 
+    return ""
+
 
 def get_second_number(line: str) -> str:
     for idx in range(len(line)):
@@ -38,6 +40,8 @@ def get_second_number(line: str) -> str:
         for number in numbers.items():
             if prefix.endswith(number[0]):
                 return number[1]
+
+    return ""
 
 
 if __name__ == '__main__':
