@@ -1,6 +1,6 @@
+from __future__ import annotations
 import sys
 import re
-from __future__ import annotations
 
 
 class PartNumber:
@@ -14,7 +14,7 @@ class PartNumber:
     def from_line(line: str, row: int) -> list[PartNumber]:
         parts: list[PartNumber] = []
 
-        for match in re.finditer('\d+', line):
+        for match in re.finditer('\\d+', line):
             part: PartNumber = PartNumber(row, match.start(), int(match.string), len(match.string))
             parts.append(part)
 
@@ -22,6 +22,7 @@ class PartNumber:
 
     def get_neighbours(self) -> list[tuple[int]]:
         pass
+
 
 class Symbol:
     def __init__(self, row: int, column: int) -> None:
@@ -32,15 +33,17 @@ class Symbol:
     def from_line(line: str, row: int) -> list[Symbol]:
         symbols: list[Symbol] = []
 
-        for match in re.finditer('', line):
+        for match in re.finditer('[^.0-9]', line):
             symbol: Symbol = Symbol(row, match.start())
+            symbols.append(symbol)
 
         return symbols
+
 
 class SchematicMap:
     def __init__(self) -> None:
         self.parts: dict[str, PartNumber] = {}
-        self.symbols: set[str] = {}
+        self.symbols: set[str] = set()
 
     def add_from_line(self, line: str, row: int) -> None:
         for part in PartNumber.from_line(line, row):
@@ -48,6 +51,7 @@ class SchematicMap:
 
         for symbol in Symbol.from_line(line, row):
             self.symbols.add(f'{symbol.row}:{symbol.column}')
+
 
 def main() -> None:
     args = sys.argv[1:]
